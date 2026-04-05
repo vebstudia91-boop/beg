@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>Promo Bar Module Integration</name>
+    <code>promobar_integration</code>
+    <version>1.0</version>
+    <author>PromoBar Dev</author>
+    <link>https://example.com</link>
+    
+    <!-- Add promo bar module output to header controller -->
+    <file path="catalog/controller/common/header.php">
+        <operation error="skip">
+            <search><![CDATA[$data['scripts'] = $this->document->getScripts('footer');]]></search>
+            <add position="before"><![CDATA[        // Promo Bar Module
+        $this->load->controller('extension/module/promobar');
+        $data['module_promobar'] = $this->load->controller('extension/module/promobar');
+        
+]]></add>
+        </operation>
+    </file>
+    
+    <!-- Add promo bar output to header template after body tag -->
+    <file path="catalog/view/theme/*/template/common/header.twig">
+        <operation error="skip">
+            <search><![CDATA[<body class="{{ class }}">]]></search>
+            <add position="after"><![CDATA[
+{{ module_promobar }}
+]]></add>
+        </operation>
+        <operation error="skip">
+            <search><![CDATA[<body>]]></search>
+            <add position="after"><![CDATA[
+{{ module_promobar }}
+]]></add>
+        </operation>
+    </file>
+</modification>
